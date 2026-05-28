@@ -1,37 +1,6 @@
-{ pkgs, lib, ... }:
+{ lib, ... }:
 {
   boot = {
-    kernelPackages =
-      let
-        linux_x1e = pkgs.buildLinux rec {
-          version = "7.1.0-rc3";
-          modDirVersion = "7.1.0-rc3";
-          src = pkgs.fetchFromGitHub {
-            owner = "torvalds";
-            repo = "linux";
-            rev = "5d6919055dec134de3c40167a490f33c74c12581"; # v7.1-rc3
-            hash = "sha256-tfOQHlMoej2pBYqDp8MxXx0yoIj43juH8f8DhBg08z8=";
-          };
-          ignoreConfigErrors = true;
-          structuredExtraConfig = with lib.kernel; {
-            SURFACE_PLATFORMS = yes;
-            SURFACE_AGGREGATOR = module;
-            SURFACE_AGGREGATOR_BUS = yes;
-            SURFACE_AGGREGATOR_REGISTRY = module;
-            SURFACE_AGGREGATOR_CDEV = module;
-            SURFACE_ACPI_NOTIFY = module;
-            SURFACE_PLATFORM_PROFILE = module;
-            SENSORS_SURFACE_FAN = module;
-            SENSORS_SURFACE_TEMP = module;
-            SERIAL_DEV_BUS = yes;
-            SERIAL_DEV_CTRL_TTYPORT = yes;
-            STRICT_DEVMEM = lib.kernel.no;
-            IO_STRICT_DEVMEM = lib.kernel.no;
-          };
-        };
-      in
-      lib.recurseIntoAttrs (pkgs.linuxPackagesFor linux_x1e);
-
     # No blacklist needed: the out-of-tree copies of spi-geni-qcom,
     # ath12k and ath12k_wifi7 built by kernel-modules.nix land in
     # lib/modules/.../extra/, which depmod prioritises over the in-tree

@@ -1,19 +1,33 @@
 {
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
     x1e-nixos.url = "./vendor/x1e-nixos";
-    pkgs.url = "./vendor/pkgs";
+    custom.url = "./vendor/pkgs";
   };
 
-  outputs = { self, x1e-nixos, pkgs }: {
+  outputs = { self, nixpkgs, x1e-nixos, custom }: {
     nixosModules = {
-      default = { ... }: {
+      default = {
         imports = with self.nixosModules; [
           x1e-nixos.nixosModules.default
-          overlays
+          kernel overlays
         ];
       };
 
-      overlays = import ./overlays.nix { inherit pkgs; };
+      kernel =
+        let
+          pkgs = import nixpkgs { system = "aarch64-linux"; };
+        in {
+          boot.kernelPackages = pkgs.linux_testing;
+        };
+
+      overlays = {
+        nixpkgs.overlays = [
+          (import ./overlay.nix)
+          custom.overlays.default
+        ];
+      };
     };
   };
 }
