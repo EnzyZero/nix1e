@@ -19,7 +19,7 @@
         let
           pkgs = import nixpkgs { system = "aarch64-linux"; };
         in {
-          boot.kernelPackages = pkgs.linux_testing;
+          boot.kernelPackages = pkgs.linuxPackages_testing;
         };
 
       overlays = {
