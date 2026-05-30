@@ -7,14 +7,12 @@
 
       all = { ... }: {
         imports = [
-          self.nixosModules.kernel
           self.nixosModules.kernel-modules
           self.nixosModules.boot
           self.nixosModules.hardware
         ];
       };
 
-      kernel = import ./kernel.nix;
       kernel-modules = import ./kernel-modules.nix;
       boot = import ./boot.nix;
       hardware = import ./hardware.nix;
