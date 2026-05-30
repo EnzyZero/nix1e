@@ -6,28 +6,31 @@
     custom.url = "./vendor/pkgs";
   };
 
-  outputs = { self, nixpkgs, x1e-nixos, custom }: {
-    nixosModules = {
-      default = {
-        imports = with self.nixosModules; [
-          x1e-nixos.nixosModules.default
-          kernel overlays
-        ];
-      };
-
-      kernel =
-        let
-          pkgs = import nixpkgs { system = "aarch64-linux"; };
-        in {
-          boot.kernelPackages = pkgs.linuxPackages_testing;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      x1e-nixos,
+      custom,
+    }:
+    {
+      nixosModules = {
+        default = {
+          imports = with self.nixosModules; [
+            x1e-nixos.nixosModules.default
+            kernel
+            overlays
+          ];
         };
 
-      overlays = {
-        nixpkgs.overlays = [
-          (import ./overlay.nix)
-          custom.overlays.default
-        ];
+        kernel = import ./kernel.nix (import nixpkgs { system = "aarch64-linux"; });
+
+        overlays = {
+          nixpkgs.overlays = [
+            (import ./overlay.nix)
+            custom.overlays.default
+          ];
+        };
       };
     };
-  };
 }
