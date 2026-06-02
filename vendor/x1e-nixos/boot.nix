@@ -1,41 +1,5 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 {
-  specialisation.el2.configuration = {
-    hardware.deviceTree = {
-      overlays = lib.mkAfter [
-        {
-          name = "x1e-el2";
-          dtboFile = "${pkgs.slbounce}/share/slbounce/dtbo/x1e-el2.dtbo";
-        }
-      ];
-    };
-    boot.kernelParams = [ "id_aa64mmfr0.ecv=1" ];
-    systemd.services.el2-boot-indicator = {
-      description = "EL2 boot indicator (blink Caps Lock LED)";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "multi-user.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      script = ''
-        LED=$(find /sys/class/leds -name "*capslock*" 2>/dev/null | head -1)
-        if [ -z "$LED" ]; then
-          LED=$(find /sys/class/leds -name "*kbd*" 2>/dev/null | head -1)
-        fi
-        if [ -n "$LED" ]; then
-          for i in 1 2 3 4 5; do
-            echo 1 > "$LED/brightness" 2>/dev/null || true
-            sleep 0.3
-            echo 0 > "$LED/brightness" 2>/dev/null || true
-            sleep 0.3
-          done
-          echo 1 > "$LED/brightness" 2>/dev/null || true
-        fi
-      '';
-    };
-  };
-
   boot = {
     initrd.extraFirmwarePaths = [
       "ath12k/WCN7850/hw2.0/amss.bin"
@@ -57,26 +21,6 @@
       "qcom/gen70500_sqe.fw.zst"
       "qcom/gen70500_gmu.bin"
     ];
-
-    kernelParams = [
-      "clk_ignore_unused"
-      "pd_ignore_unused"
-      "iomem=relaxed"
-      "mem_sleep_default=s2idle"
-    ];
-
-    blacklistedKernelModules = [
-      "qcom_battmgr"
-      "qcrypto"
-    ];
-
-    supportedFilesystems = {
-      btrfs = true;
-      zfs = lib.mkForce false;
-      cifs = lib.mkForce false;
-    };
-
-    consoleLogLevel = 7;
 
     loader.systemd-boot = {
       edk2-uefi-shell.enable = true;

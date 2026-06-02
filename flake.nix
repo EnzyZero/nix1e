@@ -16,14 +16,13 @@
           imports = with self.nixosModules; [
             x1e-nixos.nixosModules.default
             kernel
-            overlays
+            overlay
           ];
         };
 
         kernel = import ./kernel;
-
-        overlays.nixpkgs.overlays = [
-          (import ./overlay.nix)
+        overlay.nixpkgs.overlays = [
+          (import ./overlay)
           custom.overlays.default
         ];
       };

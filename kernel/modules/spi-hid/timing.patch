@@ -1,0 +1,11 @@
+--- a/drivers/hid/spi-hid/spi-hid-of.c
++++ b/drivers/hid/spi-hid/spi-hid-of.c
+@@ -207,7 +207,7 @@
+ 
+ const struct spi_hid_timing_data timing_data = {
+ 	.post_power_on_delay_ms = 10,
+-	.minimal_reset_delay_ms = 100,
++	.minimal_reset_delay_ms = 300,
+ };
+ 
+ const struct of_device_id spi_hid_of_match[] = {

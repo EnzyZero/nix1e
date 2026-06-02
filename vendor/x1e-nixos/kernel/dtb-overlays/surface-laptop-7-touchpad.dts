@@ -8,6 +8,7 @@
 
 #define IRQ_TYPE_LEVEL_LOW 8
 #define QCOM_GPI_QSPI 4
+#define GPIO_ACTIVE_LOW 1
 
 / {
 	compatible = "microsoft,romulus13", "microsoft,romulus15", "qcom,x1e80100";
@@ -51,20 +52,11 @@
 		bias-disable;
 	};
 
-	spi19_hid0_reset_deassert: spi19-hid0-reset-deassert-state {
-		pins = "gpio65", "gpio120";
+	spi19_hid0_reset_pin: spi19-hid0-reset-pin-state {
+		pins = "gpio120";
 		function = "gpio";
 		drive-strength = <16>;
 		bias-disable;
-		output-high;
-	};
-
-	spi19_hid0_reset_assert: spi19-hid0-reset-assert-state {
-		pins = "gpio65", "gpio120";
-		function = "gpio";
-		drive-strength = <16>;
-		bias-disable;
-		output-low;
 	};
 
 	spi19_hid0_int_bias: spi19-hid0-int-bias-state {
@@ -102,8 +94,15 @@
 
 		vdd-supply = <&vreg_ts_5p0>;
 
-		pinctrl-0 = <&spi19_hid0_reset_deassert>;
-		pinctrl-1 = <&spi19_hid0_reset_assert>;
-		pinctrl-names = "active", "reset";
+		reset-gpios = <&tlmm 120 GPIO_ACTIVE_LOW>;
+
+		pinctrl-0 = <&spi19_hid0_reset_pin>;
+		pinctrl-names = "default";
+
+		input-report-header-address = <0x1000>;
+		input-report-body-address = <0x1004>;
+		output-report-address = <0x2000>;
+		read-opcode = <0xEB>;
+		write-opcode = <0xE2>;
 	};
 };

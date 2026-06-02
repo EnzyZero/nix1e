@@ -7,41 +7,6 @@
 let
   kernel = config.boot.kernelPackages.kernel;
 
-  spi-hid = pkgs.stdenv.mkDerivation {
-    pname = "spi-hid";
-    version = "0.3.1-${kernel.version}";
-    src = ./kernel/modules/spi-hid;
-    hardeningDisable = [
-      "pic"
-      "format"
-    ];
-    nativeBuildInputs = kernel.moduleBuildDependencies ++ [ pkgs.kmod ];
-    makeFlags = [
-      "KERNELRELEASE=${kernel.modDirVersion}"
-      "KERNEL_DIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
-      "INSTALL_MOD_PATH=$(out)"
-    ];
-    buildPhase = ''
-      runHook preBuild
-      make -C ${kernel.dev}/lib/modules/${kernel.modDirVersion}/build \
-        M=$(pwd) \
-        ARCH=${pkgs.stdenv.hostPlatform.linuxArch} \
-        modules
-      runHook postBuild
-    '';
-    installPhase = ''
-      runHook preInstall
-      install -D -m 644 spi-hid.ko $out/lib/modules/${kernel.modDirVersion}/extra/spi-hid.ko
-      runHook postInstall
-    '';
-    enableParallelBuilding = true;
-    meta = with lib; {
-      description = "HID over SPI (HIDSPI v3) QSPI transport driver";
-      license = licenses.gpl2Only;
-      platforms = platforms.linux;
-    };
-  };
-
   ath12k-norfkill = pkgs.stdenv.mkDerivation {
     pname = "ath12k-norfkill";
     inherit (kernel)
@@ -181,41 +146,6 @@ let
     };
   };
 
-  ec-reboot = pkgs.stdenv.mkDerivation {
-    pname = "ec-reboot";
-    version = "0.1.0-${kernel.version}";
-    src = ./kernel/modules/ec-reboot;
-    hardeningDisable = [
-      "pic"
-      "format"
-    ];
-    nativeBuildInputs = kernel.moduleBuildDependencies ++ [ pkgs.kmod ];
-    makeFlags = [
-      "KERNELRELEASE=${kernel.modDirVersion}"
-      "KERNEL_DIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
-      "INSTALL_MOD_PATH=$(out)"
-    ];
-    buildPhase = ''
-      runHook preBuild
-      make -C ${kernel.dev}/lib/modules/${kernel.modDirVersion}/build \
-        M=$(pwd) \
-        ARCH=${pkgs.stdenv.hostPlatform.linuxArch} \
-        modules
-      runHook postBuild
-    '';
-    installPhase = ''
-      runHook preInstall
-      install -D -m 644 ec-reboot.ko $out/lib/modules/${kernel.modDirVersion}/extra/ec-reboot.ko
-      runHook postInstall
-    '';
-    enableParallelBuilding = true;
-    meta = with lib; {
-      description = "Trigger EC hard reset via SSAM for Surface Laptop 7";
-      license = licenses.gpl2Only;
-      platforms = platforms.linux;
-    };
-  };
-
   platform-profile = pkgs.stdenv.mkDerivation {
     pname = "platform-profile-no-acpi";
     inherit (kernel)
@@ -258,7 +188,6 @@ in
 
   config = {
     boot.extraModulePackages = [
-      spi-hid
       gpi-qspi
       spi-geni-qcom-qspi
       ath12k-norfkill

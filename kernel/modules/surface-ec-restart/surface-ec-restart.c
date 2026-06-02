@@ -6,15 +6,15 @@ static struct sys_off_handler *surface_ec_restart_handler;
 
 static int surface_ec_restart(struct sys_off_data *data) {
     struct ssam_controller *ctrl = ssam_get_controller();
-	struct ssam_request req = {
-		.target_category = 0x01,
-		.target_id       = 0x01,
-		.command_id      = 0x14,
-		.instance_id     = 0x00,
-	};
+    struct ssam_request req = {
+        .target_category = 0x01,
+        .target_id       = 0x01,
+        .command_id      = 0x14,
+        .instance_id     = 0x00,
+    };
 
-	if (ctrl) ssam_request_do_sync(ctrl, &req, NULL);
-	return NOTIFY_DONE;
+    if (ctrl) ssam_request_do_sync(ctrl, &req, NULL);
+    return NOTIFY_DONE;
 }
 
 static int __init surface_ec_restart_init(void) {
