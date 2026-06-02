@@ -10,6 +10,7 @@ let
     patch src'
       [
         ./chipselect.patch
+        ./spi.patch
         ./timing.patch
       ]
       {

@@ -1,0 +1,63 @@
+diff --git a/drivers/hid/spi-hid/spi-hid-core.c b/drivers/hid/spi-hid/spi-hid-core.c
+index 9eedd4f..4958639 100644
+--- a/drivers/hid/spi-hid/spi-hid-core.c
++++ b/drivers/hid/spi-hid/spi-hid-core.c
+@@ -190,24 +190,24 @@ static int spi_hid_input_sync(struct spi_hid *shid, void *buf, u16 length,
+ 			      bool is_header)
+ {
+ 	int error;
+-
+-	shid->input_transfer[0].tx_buf = is_header ?
+-					 shid->read_approval_header :
++	const u8 *approval = is_header ? shid->read_approval_header :
+ 					 shid->read_approval_body;
+-	shid->input_transfer[0].len = SPI_HID_READ_APPROVAL_LEN;
+ 
+-	shid->input_transfer[1].rx_buf = buf;
+-	shid->input_transfer[1].len = length;
++	memcpy(shid->input_tx, approval, SPI_HID_READ_APPROVAL_LEN);
++	shid->input_transfer[0].tx_buf = shid->input_tx;
++	shid->input_transfer[0].rx_buf = buf;
++	shid->input_transfer[0].len = length;
+ 
+ 	spi_message_init_with_transfers(&shid->input_message,
+-					shid->input_transfer, 2);
++					shid->input_transfer, 1);
+ 
+-	trace_spi_hid_input_sync(shid,	shid->input_transfer[0].tx_buf,
+-				 shid->input_transfer[0].len,
+-				 shid->input_transfer[1].rx_buf,
+-				 shid->input_transfer[1].len, 0);
++	trace_spi_hid_input_sync(shid, shid->input_transfer[0].tx_buf,
++				 SPI_HID_READ_APPROVAL_LEN,
++				 shid->input_transfer[0].rx_buf,
++				 shid->input_transfer[0].len, 0);
+ 
+ 	error = spi_sync(shid->spi, &shid->input_message);
++
+ 	if (error) {
+ 		dev_err(&shid->spi->dev, "Error starting sync transfer: %d.", error);
+ 		shid->bus_error_count++;
+@@ -946,8 +946,9 @@ static int spi_hid_alloc_buffers(struct spi_hid *shid, size_t report_size)
+ 	shid->output = devm_krealloc(dev, shid->output, outbufsize, GFP_KERNEL | __GFP_ZERO);
+ 	shid->input = devm_krealloc(dev, shid->input, inbufsize, GFP_KERNEL | __GFP_ZERO);
+ 	shid->response = devm_krealloc(dev, shid->response, inbufsize, GFP_KERNEL | __GFP_ZERO);
++	shid->input_tx = devm_krealloc(dev, shid->input_tx, inbufsize, GFP_KERNEL | __GFP_ZERO);
+ 
+-	if (!shid->output || !shid->input || !shid->response)
++	if (!shid->output || !shid->input || !shid->response || !shid->input_tx)
+ 		return -ENOMEM;
+ 
+ 	shid->bufsize = report_size;
+diff --git a/drivers/hid/spi-hid/spi-hid-core.h b/drivers/hid/spi-hid/spi-hid-core.h
+index 261b2fd..556fd40 100644
+--- a/drivers/hid/spi-hid/spi-hid-core.h
++++ b/drivers/hid/spi-hid/spi-hid-core.h
+@@ -57,6 +57,7 @@ struct spi_hid {
+ 	struct spi_hid_output_buf *output;	/* Output buffer. */
+ 	struct spi_hid_input_buf *input;	/* Input buffer. */
+ 	struct spi_hid_input_buf *response;	/* Response buffer. */
++	u8 *input_tx;
+ 
+ 	struct drm_panel_follower panel_follower;
+ 	bool	is_panel_follower;
