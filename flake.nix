@@ -15,16 +15,10 @@
         default = {
           imports = with self.nixosModules; [
             x1e-nixos.nixosModules.default
-            kernel
-            overlay
+            { nixpkgs.overlays = [ custom.overlays.default ]; }
+            ./.
           ];
         };
-
-        kernel = import ./kernel;
-        overlay.nixpkgs.overlays = [
-          (import ./overlay)
-          custom.overlays.default
-        ];
       };
     };
 }

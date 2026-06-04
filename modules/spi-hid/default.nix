@@ -11,7 +11,6 @@ let
       [
         ./chipselect.patch
         ./spi.patch
-        ./timing.patch
       ]
       {
         "drivers/hid/spi-hid/Makefile" = ./Makefile;
