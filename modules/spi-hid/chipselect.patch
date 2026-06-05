@@ -1,28 +1,31 @@
+diff --git a/drivers/hid/spi-hid/spi-hid-trace.h b/drivers/hid/spi-hid/spi-hid-trace.h
+index cc13d71..5b7217b 100644
 --- a/drivers/hid/spi-hid/spi-hid-trace.h
 +++ b/drivers/hid/spi-hid/spi-hid-trace.h
-@@ -29,7 +29,7 @@
-
+@@ -29,7 +29,7 @@ DECLARE_EVENT_CLASS(spi_hid_transfer,
+ 
  	TP_fast_assign(
  		__entry->bus_num = shid->spi->controller->bus_num;
 -		__entry->chip_select = shid->spi->chip_select;
 +		__entry->chip_select = spi_get_chipselect(shid->spi, 0);
  		__entry->ret = ret;
-
+ 
  		memcpy(__get_dynamic_array(tx_buf), tx_buf, tx_len);
-@@ -72,7 +72,7 @@
-
+@@ -72,7 +72,7 @@ DECLARE_EVENT_CLASS(spi_hid_irq,
+ 
  	TP_fast_assign(
  		__entry->bus_num = shid->spi->controller->bus_num;
 -		__entry->chip_select = shid->spi->chip_select;
 +		__entry->chip_select = spi_get_chipselect(shid->spi, 0);
  		__entry->irq = irq;
  	),
-
-@@ -105,7 +105,7 @@
-
+ 
+@@ -105,7 +105,7 @@ DECLARE_EVENT_CLASS(spi_hid,
+ 
  	TP_fast_assign(
  		__entry->bus_num = shid->spi->controller->bus_num;
 -		__entry->chip_select = shid->spi->chip_select;
 +		__entry->chip_select = spi_get_chipselect(shid->spi, 0);
  		__entry->power_state = shid->power_state;
  		__entry->flags = shid->flags;
+ 

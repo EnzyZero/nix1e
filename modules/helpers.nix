@@ -5,6 +5,14 @@
 }:
 let
   build = "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build";
+  getMbox =
+    msg: hash:
+    pkgs.fetchurl {
+      url = "https://lore.kernel.org/all/${msg}/t.mbox.gz";
+      postFetch = ''gunzip < "$downloadedFile" > "$out"'';
+      downloadToTemp = true;
+      inherit hash;
+    };
 in
 {
   mkModule =
@@ -22,17 +30,9 @@ in
 
   mkSrc =
     msg: hash:
-    let
-      mbox = pkgs.fetchurl {
-        url = "https://lore.kernel.org/all/${msg}/t.mbox.gz";
-        postFetch = ''gunzip < "$downloadedFile" > "$out"'';
-        downloadToTemp = true;
-        inherit hash;
-      };
-    in
     pkgs.runCommand msg { } ''
       mkdir -p $out
-      patch -d $out -p1 -f < ${mbox} || true
+      patch -d $out -p1 -f < ${getMbox msg hash} || true
     '';
 
   patch =

@@ -10,7 +10,7 @@ let
     patch src'
       [
         ./chipselect.patch
-        ./spi.patch
+        ./fullduplex.patch
       ]
       {
         "drivers/hid/spi-hid/Makefile" = ./Makefile;
