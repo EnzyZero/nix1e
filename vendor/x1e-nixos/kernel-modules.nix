@@ -182,19 +182,14 @@ let
   };
 in
 {
-  options.x1e = {
-    cpuParking = lib.mkEnableOption "CPU core parking for Snapdragon X Elite";
-  };
-
-  config = {
-    boot.extraModulePackages = [
+  boot = {
+    extraModulePackages = [
       gpi-qspi
       spi-geni-qcom-qspi
       ath12k-norfkill
       platform-profile
-    ]
-    ++ lib.optional config.x1e.cpuParking cpu-parking;
-
-    boot.kernelModules = lib.optional config.x1e.cpuParking "cpu_parking";
+      cpu-parking
+    ];
+    kernelModules = [ "cpu_parking" ];
   };
 }

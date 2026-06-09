@@ -6,14 +6,14 @@
 
   outputs =
     {
-      self,
       x1e-nixos,
       custom,
+      ...
     }:
     {
       nixosModules = {
         default = {
-          imports = with self.nixosModules; [
+          imports = [
             x1e-nixos.nixosModules.default
             { nixpkgs.overlays = [ custom.overlays.default ]; }
             ./.

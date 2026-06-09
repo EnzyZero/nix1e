@@ -15,6 +15,10 @@
 #define QCOM_GPI_QSPI 4
 #define GPIO_ACTIVE_LOW 1
 
+/ {
+	compatible = "microsoft,romulus13", "microsoft,romulus15", "qcom,x1e80100";
+};
+
 &gpi_dma2 {
 	status = "okay";
 };

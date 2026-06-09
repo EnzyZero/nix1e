@@ -2,10 +2,10 @@
 {
   imports = [
     ./modules
+    ./firmware
     ./dts
   ];
 
-  hardware.enableAllFirmware = true;
   boot = {
     kernelPackages = pkgs.linuxPackages_testing;
     initrd.availableKernelModules = [ "phy_qcom_qmp_pcie" ];
