@@ -1,14 +1,16 @@
 nix1e
 =====
 
-A flake to make NixOS work just a bit better on the Surface Laptop 7.
+A flake that makes NixOS run a little better on the Surface Laptop 7.
 
-This was created by slowly reimplementing portions of the flake made by scuggo.
-The following is a list of notable changes from scuggo's flake. Do keep in mind
-that some things build upon previously mentioned changes
+This started as a slow reimplementation of scuggo's flake. Notable changes are
+listed below; some build on earlier ones.
 
-- ec_reboot was removed in favor of a reboot hook to hard reset as a result of
-  any regular kernel restart/reboot.
-- Swapped the spi-hid driver for a patched-up version of a newer series
-  submitted by Chromium and slightly modified the devicetree to accomodate the
-  changes. *This properly powered the trackpad and solved suspend issues.*
+- Removed ec_reboot in favor of a reboot hook to hard reset for any regular
+  kernel restart/reboot.
+- Swapped the spi-hid driver for a patched-up newer series submitted by
+  Chromium, with minor devicetree tweaks to match. *This properly powers the
+  trackpad and fixes suspend.*
+- Pulled in more of the firmware shipped by Microsoft, which enables:
+  - Hardware encoding of H.264 and HEVC and hardware decoding of H.264, HEVC,
+    AV1, and VP9.

@@ -19,10 +19,12 @@ in
   config.hardware.deviceTree = {
     enable = true;
     inherit name;
+
+    dtboBuildExtraIncludePaths = [ ./. ];
     overlays = [
       {
-        name = "touchpad";
-        dtsFile = ./touchpad.dts;
+        name = "romulus";
+        dtsFile = ./default.dts;
       }
     ];
   };

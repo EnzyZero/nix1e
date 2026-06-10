@@ -1,23 +1,6 @@
-/*
- * TODO: rewrite this file because it is kinda funky
- * /dts-v1/;
- * /plugin/;
-
- * &spi19 {
- * 	status = "okay";
- * };
- */
-
-/dts-v1/;
-/plugin/;
-
 #define IRQ_TYPE_LEVEL_LOW 8
 #define QCOM_GPI_QSPI 4
 #define GPIO_ACTIVE_LOW 1
-
-/ {
-	compatible = "microsoft,romulus13", "microsoft,romulus15", "qcom,x1e80100";
-};
 
 &gpi_dma2 {
 	status = "okay";

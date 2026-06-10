@@ -1,0 +1,5 @@
+#include "overlay.dtsi"
+
+#include "firmware/gpu.dtsi"
+
+#include "old/touchpad.dtsi"
