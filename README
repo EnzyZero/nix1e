@@ -4,7 +4,7 @@ nix1e
 A flake that makes NixOS run a little better on the Surface Laptop 7.
 
 This started as a slow reimplementation of scuggo's flake. Notable changes are
-listed below; some build on earlier ones.
+listed below.
 
 - Removed ec_reboot in favor of a reboot hook to hard reset for any regular
   kernel restart/reboot.

@@ -1,1 +1,3 @@
-#include "gpu.dtsi"
+#include "compute.dtsi"
+#include "audio.dtsi"
+#include "video.dtsi"

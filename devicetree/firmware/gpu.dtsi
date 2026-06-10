@@ -1,8 +1,0 @@
-// &gpu_zap_shader {
-//     firmware-name = "qcom/x1e80100/microsoft/qcdxkmsuc8380.mbn";
-// };
-
-&iris {
-    status = "okay";
-    firmware-name = "qcom/x1e80100/microsoft/Romulus/qcvss8380.mbn";
-};
