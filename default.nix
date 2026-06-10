@@ -3,7 +3,7 @@
   imports = [
     ./modules
     ./firmware
-    ./dts
+    ./devicetree
   ];
 
   boot = {

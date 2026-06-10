@@ -14,3 +14,4 @@ listed below; some build on earlier ones.
 - Pulled in more of the firmware shipped by Microsoft, which enables:
   - Hardware encoding of H.264 and HEVC and hardware decoding of H.264, HEVC,
     AV1, and VP9.
+- Devicetree support for touchscreen.

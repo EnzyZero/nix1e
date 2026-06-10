@@ -3,6 +3,6 @@
 // };
 
 &iris {
-    firmware-name = "qcom/x1e80100/microsoft/Romulus/qcvss8380.mbn";
     status = "okay";
+    firmware-name = "qcom/x1e80100/microsoft/Romulus/qcvss8380.mbn";
 };

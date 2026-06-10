@@ -1,0 +1,3 @@
+#include "qspi.dtsi"
+
+#include "touch/default.dtsi"

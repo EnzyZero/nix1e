@@ -1,0 +1,5 @@
+#define IRQ_TYPE_LEVEL_LOW 8
+#define GPIO_ACTIVE_LOW 1
+
+#include "touchpad.dtsi"
+#include "touchscreen.dtsi"
