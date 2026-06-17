@@ -1,19 +1,15 @@
 {
-  mkModule,
-  mkSrc,
-  patch,
-  ...
-}:
-let
-  src' = mkSrc "20260402-send-upstream-v3-0-6091c458d357@chromium.org" "sha256-+eaCgSMmBU4vL4+uvqmyQ+nBrPORuFW6njL2xXWxPDs=";
-  src =
-    patch src'
-      [
-        ./chipselect.patch
-        ./fullduplex.patch
-      ]
-      {
-        "drivers/hid/spi-hid/Makefile" = ./Makefile;
-      };
-in
-mkModule "spi-hid" "3" "${src}/drivers/hid/spi-hid"
+  path = "drivers/hid/spi-hid";
+  config = {
+    "SPI_HID_CORE" = "m";
+    "SPI_HID_OF" = "m";
+  };
+
+  series = [
+    {
+      id = "20260609-send-upstream-v4-0-b843d5e6ced3@chromium.org";
+      hash = "sha256-x9TMe6DdACpyanuJKfsich61ayBt92MQOfKXsDCSMXo=";
+    }
+  ];
+  patches = [ ./fullduplex.patch ];
+}

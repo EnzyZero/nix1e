@@ -17,14 +17,17 @@ let
       cd SurfaceUpdate
     '';
 
-    installPhase = lib.concatStringsSep "\n" (
+    installPhase = lib.concatLines (
       lib.mapAttrsToList (dst: file: ''install -Dm644 "${file}" "$out/lib/firmware/${dst}"'') files
     );
   };
 in
 {
-  hardware.firmware = [
-    romulus-firmware
-    pkgs.x1e80100-linux-firmware
-  ];
+  hardware = {
+    enableRedistributableFirmware = lib.mkForce false;
+    firmware = [
+      pkgs.x1e80100-linux-firmware
+      romulus-firmware
+    ];
+  };
 }

@@ -1,9 +1,9 @@
 let
   pkgs = import <nixpkgs> { };
-  helpers = import ./helpers.nix {
-    inherit pkgs;
+  kernel = pkgs.linuxPackages_testing.kernel;
+  mkModule = import ./mkModule.nix {
+    inherit pkgs kernel;
     inherit (pkgs) lib;
-    kernel = pkgs.linuxPackages_testing.kernel;
   };
 in
-import ./spi-hid helpers
+mkModule "spi-hid" "4" ./spi-hid
