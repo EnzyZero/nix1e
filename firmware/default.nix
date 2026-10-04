@@ -5,7 +5,7 @@ let
   # https://www.microsoft.com/en-us/download/details.aspx?id=106120
   romulus-firmware = pkgs.stdenv.mkDerivation rec {
     pname = "romulus-firmware";
-    version = "26100_26.033.32430.0";
+    version = "26100_26.053.36539.0";
     src = pkgs.fetchurl {
       url = "https://download.microsoft.com/download/b7ca2c3f-d320-4795-be0f-529a0117abb4/SurfaceLaptop7_ARM_Win11_${version}.msi";
       hash = "sha256-KyHgMGk/oytVctE5AhdXer+x7mJk2uP8Vgc7v78wSRc=";

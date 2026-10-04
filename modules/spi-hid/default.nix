@@ -8,7 +8,7 @@
   series = [
     {
       id = "20260609-send-upstream-v4-0-b843d5e6ced3@chromium.org";
-      hash = "sha256-x9TMe6DdACpyanuJKfsich61ayBt92MQOfKXsDCSMXo=";
+      hash = "sha256-H1DcfHXImKE9x4DhaXFKzeVRX0vmn9twjXPsoM4iVvo=";
     }
   ];
   patches = [ ./fullduplex.patch ];
